@@ -1,11 +1,12 @@
+import config
 import tweepy #https://github.com/tweepy/tweepy
 import csv
 
 #Twitter API credentials
-consumer_key = "8Mw0a6GutZbrdGc9ObWrtY62d"
-consumer_secret = "WHNyQUV4dtdVr1tJZ056TkcniQFC7DDc4TuoZXAD7TPHWhBhJk"
-access_key = "846995107899478020-j020Oq0uqIC1htIe62Djsh4wo777MU2"
-access_secret = "2PM178d3DM5zZX4swxBScCbZgqwdi4k7sh0CFEGHzWI6B"
+consumer_key = config.api_key
+consumer_secret = config.api_secretKey
+access_key = config.acess_token
+access_secret = config.acess_tokenSecret
 
 
 def get_all_tweets(screen_name):
@@ -35,11 +36,11 @@ def get_all_tweets(screen_name):
         
         len = len-1
     
-    outtweets = [[tweet.id_str, tweet.created_at, tweet.text] for tweet in alltweets]
+    outtweets = [[tweet.id_str, tweet.created_at, tweet.text] for tweet in alltweets]  #creating a 2D array to store tweets
     
     with open(f'new_{screen_name}_tweets.csv', 'w') as f:
         writer = csv.writer(f)
-        writer.writerow(["id","created_at","text"])
+        writer.writerow(["id","created_at","text"])        #writing the CSV file.
         writer.writerows(outtweets)
     
     pass
