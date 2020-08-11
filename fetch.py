@@ -1,3 +1,4 @@
+import pika
 import config
 import tweepy #https://github.com/tweepy/tweepy
 import csv
@@ -47,6 +48,25 @@ def get_all_tweets(screen_name):
 
 
 if __name__ == '__main__':
-    scan = input("Enter twitter id to download tweets:")
-    get_all_tweets(scan)
-    print("1000 tweets downloaded so far")
+    connection = pika.BlockingConnection(
+        pika.ConnectionParameters(host='localhost'))
+    channel = connection.channel()
+    channel.queue_declare(queue='ACCOUNT_DOWNLOADER')
+
+    message = ""
+
+    def callback(ch, method, properties, body):
+        print(" [x] Received %r" % body)
+        message = body
+        get_all_tweets(body)
+        print("1000 tweets downloaded so far")
+        
+    channel.basic_consume(queue='ACCOUNT_DOWNLOADER',
+                      auto_ack=True,
+                      on_message_callback=callback)
+
+    print(' [*] Waiting for messages. To exit press CTRL+C')
+    channel.start_consuming()
+    
+
+
