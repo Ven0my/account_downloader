@@ -50,15 +50,15 @@ def get_all_tweets(screen_name):
 if __name__ == '__main__':
     connection = pika.BlockingConnection(
         pika.ConnectionParameters(host='localhost'))
-    channel = connection.channel()
+    channel = connection.channel()                          #setting connection for recieving.
     channel.queue_declare(queue='ACCOUNT_DOWNLOADER')
 
     message = ""
 
-    def callback(ch, method, properties, body):
+    def callback(ch, method, properties, body):              #calling function to recieve.
         print(" [x] Received %r" % body)
-        message = body
-        get_all_tweets(body)
+        message = body                                      
+        get_all_tweets(body)                                 #calling function to download 1000 tweets.
         print("1000 tweets downloaded so far")
         
     channel.basic_consume(queue='ACCOUNT_DOWNLOADER',
