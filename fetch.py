@@ -58,7 +58,7 @@ if __name__ == '__main__':
     def callback(ch, method, properties, body):              #calling function to recieve.
         print(" [x] Received %r" % body)
         message = body                                      
-        get_all_tweets(body)                                 #calling function to download 1000 tweets.
+        get_all_tweets(message)                                 #calling function to download 1000 tweets.
         print("1000 tweets downloaded so far")
         
     channel.basic_consume(queue='ACCOUNT_DOWNLOADER',
